@@ -1,6 +1,7 @@
 package protocol
 
 import (
+	"encoding/json"
 	"fmt"
 	"strings"
 )
@@ -11,41 +12,45 @@ type MPSError struct {
 }
 
 type MPSInterlock struct {
-	MagnetFault                   bool
-	ExternalSpare1                bool
-	ExternalSpare2                bool
-	FreewheelDiodeOverTemperature bool
-	LowWaterFlor                  bool
-	DoorOpen                      bool
-	DiodeHeatSinkOverTemperature  bool
-	ChassisOverTemperature        bool
-	IGBTHeatSinkOverTemperature   bool
-	HFDiodeOverTemperature        bool
-	SwitchRegulatorDCCTFailure    bool
-	SwitchRegulatorSupplyFailure  bool
-	IGBTDriverFailure             bool
-	OverCurrent                   bool
+	MagnetFault                   bool `json:"magnet-fault"`
+	ExternalSpare1                bool `json:"external-spare-01"`
+	ExternalSpare2                bool `json:"external-spare-02"`
+	FreewheelDiodeOverTemperature bool `json:"freeewheel-diode-overtemp"`
+	LowWaterFlow                  bool `json:"low-water-flow"`
+	DoorOpen                      bool `json:"door-open"`
+	DiodeHeatSinkOverTemperature  bool `json:"diode-heatsink-overtemp"`
+	ChassisOverTemperature        bool `json:"chassis-overtemp"`
+	IGBTHeatSinkOverTemperature   bool `json:"igbt-heatsink-overtemp"`
+	HFDiodeOverTemperature        bool `json:"hf-diode-overtemp"`
+	SwitchRegulatorDCCTFailure    bool `json:"switchreg-dcct-failure"`
+	SwitchRegulatorSupplyFailure  bool `json:"switchreg-supply-failure"`
+	IGBTDriverFailure             bool `json:"igbt-driver-failure"`
+	OverCurrent                   bool `json:"overcurrent"`
 }
 
 type MPSWarning struct {
-	ACUnderVoltage         bool
-	ExcessiveCurrentRipple bool
-	GroundLeakCurrent      bool
+	ACUnderVoltage         bool `json:"ac-undervolt"`
+	ExcessiveCurrentRipple bool `json:"excessive-current-ripple"`
+	GroundLeakCurrent      bool `json:"ground-leak-current"`
 }
 
 type MPSStatus struct {
-	PositivePolarity          bool
-	NegativePolarity          bool
-	ExternalInternalReference bool
-	RemoteControlIndication   bool
-	MainPowerIsOn             bool
-	Ready                     bool
+	PositivePolarity          bool `json:"positive-polarity"`
+	NegativePolarity          bool `json:"negative-polarity"`
+	ExternalInternalReference bool `json:"ext/int-referece"`
+	RemoteControlIndication   bool `json:"remote-control"`
+	MainPowerIsOn             bool `json:"main-power-on"`
+	Ready                     bool `json:"ready"`
 }
 
 type StatusBits struct {
-	Status    MPSStatus
-	Warning   MPSWarning
-	Interlock MPSInterlock
+	Status    MPSStatus    `json:"status"`
+	Warning   MPSWarning   `json:"warning"`
+	Interlock MPSInterlock `json:"interlock"`
+}
+
+func (s StatusBits) ToJson() ([]byte, error) {
+	return json.Marshal(s)
 }
 
 // Gets the firmware version
@@ -248,7 +253,7 @@ func (m *MPS8800) GetStatus() (StatusBits, error) {
 			ExternalSpare1:                value[2] == '!',
 			ExternalSpare2:                value[3] == '!',
 			FreewheelDiodeOverTemperature: value[7] == '!',
-			LowWaterFlor:                  value[8] == '!',
+			LowWaterFlow:                  value[8] == '!',
 			DoorOpen:                      value[9] == '!',
 			DiodeHeatSinkOverTemperature:  value[16] == '!',
 			ChassisOverTemperature:        value[17] == '!',
