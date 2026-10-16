@@ -7,8 +7,8 @@ import (
 )
 
 type MPSError struct {
-	Code        string
-	Description string
+	Code        string `json:"code"`
+	Description string `json:"description"`
 }
 
 type MPSInterlock struct {
