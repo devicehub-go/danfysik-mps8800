@@ -2,6 +2,7 @@ package protocol
 
 import (
 	"fmt"
+	"log"
 	"strconv"
 	"strings"
 	"sync"
@@ -75,6 +76,7 @@ func (m *MPS8800) Query(message string) (string, error) {
 	responsesArr := strings.Split(responseStr, "\r")
 	// This allows handle with possible asynchronous error messages
 	if len(response) > 2 {
+		log.Printf("[DEBUG] Received messages: %v", responsesArr)
 		responseStr = responsesArr[len(responsesArr)-1]
 	}
 

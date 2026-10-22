@@ -15,7 +15,7 @@ func TestCommunication(t *testing.T) {
 	danfysik := danfysikmps8800.New(unicomm.Options{
 		Protocol: unicomm.TCP,
 		TCP: unicommtcp.TCPOptions{
-			Host:         "10.0.28.44",
+			Host:         "192.168.1.120",
 			Port:         4002,
 			ReadTimeout:  200 * time.Millisecond,
 			WriteTimeout: 200 * time.Millisecond,
