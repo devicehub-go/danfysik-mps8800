@@ -75,9 +75,11 @@ func (m *MPS8800) Query(message string) (string, error) {
 	responseStr = strings.TrimSuffix(responseStr, "\r")
 	responsesArr := strings.Split(responseStr, "\r")
 	// This allows handle with possible asynchronous error messages
-	if len(response) > 2 {
-		log.Printf("[DEBUG] Received messages: %v", responsesArr)
+	if len(responsesArr) > 1 {
 		responseStr = responsesArr[len(responsesArr)-1]
+	}
+	if len(responsesArr) > 2 {
+		log.Printf("[DEBUG] Some messages were ignored: %v", responsesArr)
 	}
 
 	responseStr = strings.ReplaceAll(responseStr, "\r", "")

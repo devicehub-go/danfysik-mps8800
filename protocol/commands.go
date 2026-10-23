@@ -43,7 +43,7 @@ func (m *MPS8800) TurnOffAuxiliaryLine() error {
 }
 
 // Turns off the addressed MPS completely, include control power
-func (m *MPS8800) TurnOff() error {
+func (m *MPS8800) GlobalOff() error {
 	if err := m.Write("GOFF"); err != nil {
 		return fmt.Errorf("error on global turn off: %v", err)
 	}
